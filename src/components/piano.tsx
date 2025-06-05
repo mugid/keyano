@@ -65,26 +65,26 @@ const Piano = () => {
   return (
     <div className="bg-[#b53d3d] flex flex-col items-center justify-center pt-6 px-6 gap-4 rounded-xl font-sans font-semibold">
       <div className="grid grid-cols-8 grid-rows-1 gap-7">
-        <div className="flex flex-row gap-2">
-          <div className="rounded-full bg-gray-300 w-[4em] h-[4em] drop-shadow-2xl/40"></div>
-          <div className="rounded-full bg-gray-300 w-[4em] h-[4em]"></div>
+        <div className="flex flex-row gap-4">
+          <div className="rounded-full bg-yellow-400 w-[4em] h-[4em] drop-shadow-2xl/80"></div>
+          <div className="rounded-full bg-yellow-400 w-[4em] h-[4em] drop-shadow-2xl/80"></div>
         </div>
-        <div className="col-span-2 col-start-3 flex flex-row gap-2">
-          <div className="rounded-full bg-gray-300 w-[4em] h-[4em]"></div>
-          <div className="rounded-full bg-gray-300 w-[4em] h-[4em]"></div>
-          <div className="rounded-full bg-gray-300 w-[4em] h-[4em]"></div>
+        <div className="col-span-2 col-start-3 flex flex-row gap-4">
+          <div className="rounded-full bg-yellow-400 w-[4em] h-[4em] drop-shadow-2xl/80"></div>
+          <div className="rounded-full bg-yellow-400 w-[4em] h-[4em] drop-shadow-2xl/80"></div>
+          <div className="rounded-full bg-yellow-400 w-[4em] h-[4em] drop-shadow-2xl/80"></div>
         </div>
-        <div className="col-span-3 col-start-6 flex flex-row gap-2">
-          <div className="bg-gray-300 w-[4em] h-[4em] rounded-md"></div>
-          <div className="bg-gray-300 w-[4em] h-[4em] rounded-md"></div>
-          <div className="bg-gray-300 w-[4em] h-[4em] rounded-md"></div>
-          <div className="bg-gray-300 w-[4em] h-[4em] rounded-md"></div>
-          <div className="bg-gray-300 w-[4em] h-[4em] rounded-md"></div>
+        <div className="col-span-3 col-start-6 flex flex-row gap-4">
+          <div className="bg-yellow-400 w-[4em] h-[4em] rounded-md drop-shadow-2xl/80"></div>
+          <div className="bg-yellow-400 w-[4em] h-[4em] rounded-md drop-shadow-2xl/80"></div>
+          <div className="bg-yellow-400 w-[4em] h-[4em] rounded-md drop-shadow-2xl/80"></div>
+          <div className="bg-yellow-400 w-[4em] h-[4em] rounded-md drop-shadow-2xl/80"></div>
+          <div className="bg-yellow-400 w-[4em] h-[4em] rounded-md drop-shadow-2xl/80"></div>
         </div>
       </div>
-      <div className="flex flex-row items-center justify-center mt-5 gap-1 inset-shadow-white/50">
+      <div className="flex flex-row items-center justify-center mt-5 gap-1 px-2 py-1">
         {octaves.map((oct) => (
-          <div key={oct} className="relative flex gap-1 mb-4">
+          <div key={oct} className="relative flex gap-1 mb-4 inset-shadow-black/80">
             {/* White keys */}
             {whiteNotes.map((note, idx) => (
               <div key={note + oct} className="relative">

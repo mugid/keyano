@@ -99,7 +99,7 @@ const Piano = () => {
                 {blackNotes[idx] && (
                   <button
                     onClick={() => playNote(`${blackNotes[idx]}${oct}`)}
-                    className=" drop-shadow-2xl w-10 h-32 bg-black rounded-md text-white text-xs absolute top-0 left-16 z-10 active:bg-gray-700"
+                    className="drop-shadow-2xl w-10 h-32 bg-black rounded-md text-white text-xs absolute top-0 left-16 z-10 active:bg-gray-700"
                     style={{ transform: "translateX(-50%)" }}
                   >
                     {blackNotes[idx]}

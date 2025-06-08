@@ -1,34 +1,10 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import * as Tone from "tone";
 
 const whiteNotes = ["C", "D", "E", "F", "G", "A", "B"];
-const blackNotes = ["C#", "D#", "", "F#", "G#", "A#", ""];
+const blackNotes = ["Cb", "Db", "", "Fb", "Gb", "Ab", ""];
 const octaves = [3, 4, 5];
-
-const synth = new Tone.PolySynth(Tone.Synth, {
-  oscillator: {
-    type: "sine",
-  },
-  envelope: {
-    attack: 0.03,
-    decay: 0.3,
-    sustain: 0.4,
-    release: 1.5,
-  },
-}).toDestination();
-
-const reverb = new Tone.Reverb({
-  decay: 3,
-  preDelay: 0.1,
-}).toDestination();
-
-const filter = new Tone.Filter({
-  frequency: 1000,
-  type: "lowpass",
-}).connect(reverb);
-
-synth.connect(filter);
 
 const keyMap: Record<string, string> = {
   // White keys
@@ -40,27 +16,62 @@ const keyMap: Record<string, string> = {
   h: "A4",
   j: "B4",
   // Black keys
-  w: "C#4",
-  e: "D#4",
-  t: "F#4",
-  y: "G#4",
-  u: "A#4",
+  w: "Cb4",
+  e: "Db4",
+  t: "Fb4",
+  y: "Gb4",
+  u: "Ab4",
 };
 
 const Piano = () => {
-  const playNote = async (note: string) => {
-    await Tone.start();
-    synth.triggerAttackRelease(note, "8n");
-  };
+  const playersRef = useRef<Map<string, Tone.Player>>(new Map());
 
   useEffect(() => {
+    // Preload sample players for all required notes
+    const loadSamples = async () => {
+      await Tone.start();
+
+      for (const oct of octaves) {
+        for (const note of whiteNotes) {
+          const fullNote = `${note}${oct}`;
+          if (!playersRef.current.has(fullNote)) {
+            const player = new Tone.Player(`/samples/${fullNote}.ogg`).toDestination();
+            player.autostart = false;
+            playersRef.current.set(fullNote, player);
+          }
+        }
+        for (let i = 0; i < blackNotes.length; i++) {
+          const sharp = blackNotes[i];
+          if (sharp) {
+            const fullNote = `${sharp}${oct}`;
+            if (!playersRef.current.has(fullNote)) {
+              const player = new Tone.Player(`/samples/${fullNote}.ogg`).toDestination();
+              player.autostart = false;
+              playersRef.current.set(fullNote, player);
+            }
+          }
+        }
+      }
+    };
+
+    loadSamples();
+
     const down = (e: KeyboardEvent) => {
       const note = keyMap[e.key.toLowerCase()];
       if (note) playNote(note);
     };
+
     window.addEventListener("keydown", down);
     return () => window.removeEventListener("keydown", down);
   }, []);
+
+  const playNote = async (note: string) => {
+    await Tone.start();
+    const player = playersRef.current.get(note);
+    if (player) {
+      player.start();
+    }
+  };
 
   return (
     <div className="bg-[#b53d3d] flex flex-col items-center justify-center pt-6 px-6 gap-4 rounded-xl font-sans font-semibold">
@@ -85,7 +96,6 @@ const Piano = () => {
       <div className="flex flex-row items-center justify-center mt-5 gap-1 px-2 py-1">
         {octaves.map((oct) => (
           <div key={oct} className="relative flex gap-1 mb-4 inset-shadow-black/80">
-            {/* White keys */}
             {whiteNotes.map((note, idx) => (
               <div key={note + oct} className="relative">
                 <button
@@ -95,7 +105,6 @@ const Piano = () => {
                   {note}
                   {oct}
                 </button>
-                {/* Black key overlay */}
                 {blackNotes[idx] && (
                   <button
                     onClick={() => playNote(`${blackNotes[idx]}${oct}`)}

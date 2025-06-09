@@ -29,7 +29,9 @@ const useRecorder = () => {
     const context = Tone.getContext();
     const destination = Tone.getDestination();
 
-    mediaDest.current = (context.rawContext as AudioContext).createMediaStreamDestination();
+    mediaDest.current = (
+      context.rawContext as AudioContext
+    ).createMediaStreamDestination();
     destination.output.connect(mediaDest.current);
 
     recorder.current = new MediaRecorder(mediaDest.current.stream);
@@ -86,6 +88,5 @@ const useRecorder = () => {
     timer,
   };
 };
-
 
 export default useRecorder;

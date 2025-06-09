@@ -2,6 +2,8 @@
 import React, { useEffect, useRef } from "react";
 import * as Tone from "tone";
 import { Play, Square } from 'lucide-react';
+import WhiteKey from "./white-keys";
+import BlackKey from "./black-keys";
 
 const whiteNotes = ["C", "D", "E", "F", "G", "A", "B"];
 const blackNotes = ["Cb", "Db", "", "Fb", "Gb", "Ab", ""];
@@ -43,6 +45,7 @@ const Piano = () => {
             playersRef.current.set(fullNote, player);
           }
         }
+
         for (let i = 0; i < blackNotes.length; i++) {
           const sharp = blackNotes[i];
           if (sharp) {
@@ -145,22 +148,9 @@ const Piano = () => {
           >
             {whiteNotes.map((note, idx) => (
               <div key={note + oct} className="relative">
-                <button
-                  onClick={() => playNote(`${note}${oct}`)}
-                  className="w-16 h-48 pt-32 text-gray-900 bg-white rounded-md active:bg-gray-200"
-                >
-                  {note}
-                  {oct}
-                </button>
+                <WhiteKey  note={note} oct={oct} playNote={playNote} />
                 {blackNotes[idx] && (
-                  <button
-                    onClick={() => playNote(`${blackNotes[idx]}${oct}`)}
-                    className="drop-shadow-2xl w-10 h-32 pt-16 bg-black rounded-md text-white text-xs absolute top-0 left-16 z-10 active:bg-gray-700"
-                    style={{ transform: "translateX(-50%)" }}
-                  >
-                    {blackNotes[idx]}
-                    {oct}
-                  </button>
+                  <BlackKey blackNotes={blackNotes} idx={idx} oct={oct} playNote={playNote} />
                 )}
               </div>
             ))}

@@ -1,5 +1,5 @@
 "use client";
-import { Play, Square } from "lucide-react";
+import { Play, Square, Pause } from "lucide-react";
 
 import WhiteKey from "./white-keys";
 import BlackKey from "./black-keys";
@@ -9,7 +9,14 @@ import useRecorder from "./hooks/useRecorder";
 import usePlayNote from "./hooks/usePlayNote";
 
 const Piano = () => {
-  const { startRecording, stopRecording } = useRecorder();
+  const {
+    startRecording,
+    togglePause,
+    stopRecording,
+    recording,
+    paused,
+    timer,
+  } = useRecorder();
   const { playNote, octaves, whiteNotes, blackNotes } = usePlayNote();
 
   return (
@@ -18,12 +25,26 @@ const Piano = () => {
         <div className="grid grid-cols-8 grid-rows-1 gap-7">
           <div className="flex flex-row gap-4 text-white">
             <div className="bg-yellow-600 rounded-full outline-offset-4">
-              <button
-                onClick={startRecording}
-                className="decoration rounded-full flex items-center justify-center translate-y-[-5px] active:translate-y-[-2px]"
-              >
-                <Play className="w-6 h-6 fill-white" />
-              </button>
+              {!recording && (
+                <button
+                  onClick={startRecording}
+                  className="decoration rounded-full flex items-center justify-center translate-y-[-5px] active:translate-y-[-2px]"
+                >
+                  <Play className="w-6 h-6 fill-white" />
+                </button>
+              )}
+              {recording && (
+                <button
+                  onClick={togglePause}
+                  className="decoration rounded-full flex items-center justify-center translate-y-[-5px] active:translate-y-[-2px]"
+                >
+                  {paused ? (
+                    <Play className="w-6 h-6 fill-white" />
+                  ) : (
+                    <Pause className="w-6 h-6 fill-white" />
+                  )}
+                </button>
+              )}
             </div>
             <div className="bg-yellow-600 rounded-full outline-offset-4">
               <button
@@ -35,9 +56,14 @@ const Piano = () => {
             </div>
           </div>
           <div className="col-span-2 col-start-3 flex flex-row gap-4">
-            <Decoration radius="rounded-full" />
-            <Decoration radius="rounded-full" />
-            <Decoration radius="rounded-full" />
+            <div className="w-full bg-black rounded-xl outline-offset-4">
+              <div className="w-full h-full flex items-center justify-end text-right px-6 bg-[#161616] rounded-xl translate-y-[5px] inset-shadow-black/80 ">
+                <span className="text-white font-mono text-xl mb-2">
+                  {String(Math.floor(timer / 60)).padStart(2, "0")}:
+                  {String(timer % 60).padStart(2, "0")}
+                </span>
+              </div>
+            </div>
           </div>
           <div className="col-span-3 col-start-6 flex flex-row gap-4">
             <Decoration radius="rounded-xl" />

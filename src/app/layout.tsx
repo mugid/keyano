@@ -28,6 +28,16 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
+        <footer className="absolute bottom-0 left-[50%] translate-x-[-50%] flex justify-center items-center mb-5">
+          recorded by
+          <a
+            href="https://github.com/mugid"
+            className="italic text-yellow-400 font-semibold hover:text-yellow-500 transition-colors duration-300 ml-1"
+          >
+            {" "}
+            bek slambek
+          </a>
+        </footer>
       </body>
     </html>
   );

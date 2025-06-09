@@ -35,7 +35,9 @@ const Piano = () => {
         for (const note of whiteNotes) {
           const fullNote = `${note}${oct}`;
           if (!playersRef.current.has(fullNote)) {
-            const player = new Tone.Player(`/samples/${fullNote}.ogg`).toDestination();
+            const player = new Tone.Player(
+              `/samples/${fullNote}.ogg`
+            ).toDestination();
             player.autostart = false;
             playersRef.current.set(fullNote, player);
           }
@@ -45,7 +47,9 @@ const Piano = () => {
           if (sharp) {
             const fullNote = `${sharp}${oct}`;
             if (!playersRef.current.has(fullNote)) {
-              const player = new Tone.Player(`/samples/${fullNote}.ogg`).toDestination();
+              const player = new Tone.Player(
+                `/samples/${fullNote}.ogg`
+              ).toDestination();
               player.autostart = false;
               playersRef.current.set(fullNote, player);
             }
@@ -73,6 +77,35 @@ const Piano = () => {
     }
   };
 
+  const dest = Tone.context.createMediaStreamDestination();
+  Tone.getDestination().connect(dest); // routes all audio to recorder too
+  const mediaRecorder = new MediaRecorder(dest.stream);
+
+  let chunks: BlobPart[] = [];
+
+  mediaRecorder.ondataavailable = (e) => {
+    if (e.data.size > 0) chunks.push(e.data);
+  };
+
+  mediaRecorder.onstop = () => {
+    const blob = new Blob(chunks, { type: "audio/webm" });
+    const url = URL.createObjectURL(blob);
+    // Optional: auto-download
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "recording.webm";
+    a.click();
+  };
+
+  const startRecording = () => {
+    chunks = [];
+    mediaRecorder.start();
+  };
+
+  const stopRecording = () => {
+    mediaRecorder.stop();
+  };
+
   return (
     <div className="bg-[#b53d3d] flex flex-col items-center justify-center pt-6 px-6 gap-4 rounded-xl font-sans font-semibold">
       <div className="grid grid-cols-8 grid-rows-1 gap-7">
@@ -81,8 +114,8 @@ const Piano = () => {
           <div className="rounded-full bg-yellow-400 w-[4em] h-[4em] drop-shadow-2xl/80"></div>
         </div>
         <div className="col-span-2 col-start-3 flex flex-row gap-4">
-          <div className="rounded-full bg-yellow-400 w-[4em] h-[4em] drop-shadow-2xl/80"></div>
-          <div className="rounded-full bg-yellow-400 w-[4em] h-[4em] drop-shadow-2xl/80"></div>
+          <button onClick={startRecording} className="rounded-full bg-yellow-400 w-[4em] h-[4em] drop-shadow-2xl/80">S</button>
+          <button onClick={stopRecording} className="rounded-full bg-yellow-400 w-[4em] h-[4em] drop-shadow-2xl/80">D</button>
           <div className="rounded-full bg-yellow-400 w-[4em] h-[4em] drop-shadow-2xl/80"></div>
         </div>
         <div className="col-span-3 col-start-6 flex flex-row gap-4">
@@ -95,7 +128,10 @@ const Piano = () => {
       </div>
       <div className="flex flex-row items-center justify-center mt-5 gap-1 px-2 py-1">
         {octaves.map((oct) => (
-          <div key={oct} className="relative flex gap-1 mb-4 inset-shadow-black/80">
+          <div
+            key={oct}
+            className="relative flex gap-1 mb-4 inset-shadow-black/80"
+          >
             {whiteNotes.map((note, idx) => (
               <div key={note + oct} className="relative">
                 <button

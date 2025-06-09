@@ -82,33 +82,40 @@ const Piano = () => {
     }
   };
 
-  const dest = Tone.getContext().createMediaStreamDestination();
-  Tone.getDestination().connect(dest); // routes all audio to recorder too
-  const mediaRecorder = new MediaRecorder(dest.stream);
-
-  let chunks: BlobPart[] = [];
-
-  mediaRecorder.ondataavailable = (e) => {
-    if (e.data.size > 0) chunks.push(e.data);
-  };
-
-  mediaRecorder.onstop = () => {
-    const blob = new Blob(chunks, { type: "audio/mpeg" });
-    const url = URL.createObjectURL(blob);
-    // Optional: auto-download
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "recording.mp3";
-    a.click();
-  };
+  const chunks = useRef<BlobPart[]>([]);
+  const recorder = useRef<MediaRecorder | null>(null);
+  const mediaDest = useRef<MediaStreamAudioDestinationNode | null>(null);
 
   const startRecording = () => {
-    chunks = [];
-    mediaRecorder.start();
+    chunks.current = [];
+
+    const context = Tone.getContext();
+    const destination = Tone.getDestination();
+
+    mediaDest.current = (context.rawContext as AudioContext).createMediaStreamDestination();
+    destination.output.connect(mediaDest.current);
+
+    recorder.current = new MediaRecorder(mediaDest.current.stream);
+
+    recorder.current.ondataavailable = (e) => {
+      if (e.data.size > 0) chunks.current.push(e.data);
+    };
+
+    recorder.current.onstop = () => {
+      const blob = new Blob(chunks.current, { type: "audio/mpeg" });
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "recording.mp3";
+      a.click();
+    };
+
+    recorder.current.start();
   };
 
   const stopRecording = () => {
-    mediaRecorder.stop();
+    recorder.current?.stop();
   };
 
   return (

@@ -88,12 +88,12 @@ const Piano = () => {
   };
 
   mediaRecorder.onstop = () => {
-    const blob = new Blob(chunks, { type: "audio/webm" });
+    const blob = new Blob(chunks, { type: "audio/mpeg" });
     const url = URL.createObjectURL(blob);
     // Optional: auto-download
     const a = document.createElement("a");
     a.href = url;
-    a.download = "recording.webm";
+    a.download = "recording.mp3";
     a.click();
   };
 

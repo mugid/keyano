@@ -139,11 +139,11 @@ const Piano = () => {
             <Decoration radius="rounded-full" />
           </div>
           <div className="col-span-3 col-start-6 flex flex-row gap-4">
-            <Decoration radius="rounded-none" />
-            <Decoration radius="rounded-none" />
-            <Decoration radius="rounded-none" />
-            <Decoration radius="rounded-none" />
-            <Decoration radius="rounded-none" />
+            <Decoration radius="rounded-xl" />
+            <Decoration radius="rounded-xl" />
+            <Decoration radius="rounded-xl" />
+            <Decoration radius="rounded-xl" />
+            <Decoration radius="rounded-xl" />
           </div>
         </div>
         <div className="flex flex-row items-center justify-center mt-5 gap-1 px-2 py-1">

@@ -6,13 +6,15 @@ type WhiteKeyProps = {
 
 const WhiteKey: React.FC<WhiteKeyProps> = ({ note, oct, playNote }) => {
   return (
-    <button
-      onClick={() => playNote(`${note}${oct}`)}
-      className="w-16 h-48 pt-32 text-gray-900 bg-white rounded-md active:bg-gray-200"
-    >
-      {note}
-      {oct}
-    </button>
+    <div className="bg-gray-200 rounded-md outline-offset-4">
+      <button
+        onClick={() => playNote(`${note}${oct}`)}
+        className="w-16 h-48 pt-32 text-gray-900 bg-white rounded-md active:translate-y-[-3px] translate-y-[-5px]"
+      >
+        {note}
+        {oct}
+      </button>
+    </div>
   );
 };
 

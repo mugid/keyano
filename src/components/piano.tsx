@@ -1,10 +1,13 @@
 "use client";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import * as Tone from "tone";
 import { Play, Square } from "lucide-react";
+
 import WhiteKey from "./white-keys";
 import BlackKey from "./black-keys";
 import Decoration from "./decoration";
+
+import useRecorder from "./hooks/useRecorder";
 
 const whiteNotes = ["C", "D", "E", "F", "G", "A", "B"];
 const blackNotes = ["Cb", "Db", "", "Fb", "Gb", "Ab", ""];
@@ -27,8 +30,11 @@ const keyMap: Record<string, string> = {
   u: "Ab4",
 };
 
+
+
 const Piano = () => {
   const playersRef = useRef<Map<string, Tone.Player>>(new Map());
+  const { startRecording, stopRecording } = useRecorder();
 
   useEffect(() => {
     // Preload sample players for all required notes
@@ -80,42 +86,6 @@ const Piano = () => {
     if (player) {
       player.start();
     }
-  };
-
-  const chunks = useRef<BlobPart[]>([]);
-  const recorder = useRef<MediaRecorder | null>(null);
-  const mediaDest = useRef<MediaStreamAudioDestinationNode | null>(null);
-
-  const startRecording = () => {
-    chunks.current = [];
-
-    const context = Tone.getContext();
-    const destination = Tone.getDestination();
-
-    mediaDest.current = (context.rawContext as AudioContext).createMediaStreamDestination();
-    destination.output.connect(mediaDest.current);
-
-    recorder.current = new MediaRecorder(mediaDest.current.stream);
-
-    recorder.current.ondataavailable = (e) => {
-      if (e.data.size > 0) chunks.current.push(e.data);
-    };
-
-    recorder.current.onstop = () => {
-      const blob = new Blob(chunks.current, { type: "audio/mpeg" });
-      const url = URL.createObjectURL(blob);
-
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "recording.mp3";
-      a.click();
-    };
-
-    recorder.current.start();
-  };
-
-  const stopRecording = () => {
-    recorder.current?.stop();
   };
 
   return (

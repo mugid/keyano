@@ -24,3 +24,9 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.decoration {
+  background: oklch(85.2% 0.199 91.936);
+  width: 4em;
+  height: 4em;
+}

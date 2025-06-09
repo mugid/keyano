@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useRef } from "react";
 import * as Tone from "tone";
+import { Play, Square } from 'lucide-react';
 
 const whiteNotes = ["C", "D", "E", "F", "G", "A", "B"];
 const blackNotes = ["Cb", "Db", "", "Fb", "Gb", "Ab", ""];
@@ -77,7 +78,7 @@ const Piano = () => {
     }
   };
 
-  const dest = Tone.context.createMediaStreamDestination();
+  const dest = Tone.getContext().createMediaStreamDestination();
   Tone.getDestination().connect(dest); // routes all audio to recorder too
   const mediaRecorder = new MediaRecorder(dest.stream);
 
@@ -109,21 +110,31 @@ const Piano = () => {
   return (
     <div className="bg-[#b53d3d] flex flex-col items-center justify-center pt-6 px-6 gap-4 rounded-xl font-sans font-semibold">
       <div className="grid grid-cols-8 grid-rows-1 gap-7">
-        <div className="flex flex-row gap-4">
-          <div className="rounded-full bg-yellow-400 w-[4em] h-[4em] drop-shadow-2xl/80"></div>
-          <div className="rounded-full bg-yellow-400 w-[4em] h-[4em] drop-shadow-2xl/80"></div>
+        <div className="flex flex-row gap-4 text-white">
+          <button
+            onClick={startRecording}
+            className="decoration rounded-full flex items-center justify-center"
+          >
+            <Play className="w-6 h-6 fill-white" />
+          </button>
+          <button
+            onClick={stopRecording}
+            className="decoration rounded-full flex items-center justify-center"
+          >
+            <Square className="w-6 h-6 fill-white" />
+          </button>
         </div>
         <div className="col-span-2 col-start-3 flex flex-row gap-4">
-          <button onClick={startRecording} className="rounded-full bg-yellow-400 w-[4em] h-[4em] drop-shadow-2xl/80">S</button>
-          <button onClick={stopRecording} className="rounded-full bg-yellow-400 w-[4em] h-[4em] drop-shadow-2xl/80">D</button>
-          <div className="rounded-full bg-yellow-400 w-[4em] h-[4em] drop-shadow-2xl/80"></div>
+          <div className="decoration rounded-full"></div>
+          <div className="decoration rounded-full"></div>
+          <div className="decoration rounded-full"></div>
         </div>
         <div className="col-span-3 col-start-6 flex flex-row gap-4">
-          <div className="bg-yellow-400 w-[4em] h-[4em] rounded-md drop-shadow-2xl/80"></div>
-          <div className="bg-yellow-400 w-[4em] h-[4em] rounded-md drop-shadow-2xl/80"></div>
-          <div className="bg-yellow-400 w-[4em] h-[4em] rounded-md drop-shadow-2xl/80"></div>
-          <div className="bg-yellow-400 w-[4em] h-[4em] rounded-md drop-shadow-2xl/80"></div>
-          <div className="bg-yellow-400 w-[4em] h-[4em] rounded-md drop-shadow-2xl/80"></div>
+          <div className="decoration"></div>
+          <div className="decoration"></div>
+          <div className="decoration"></div>
+          <div className="decoration"></div>
+          <div className="decoration"></div>
         </div>
       </div>
       <div className="flex flex-row items-center justify-center mt-5 gap-1 px-2 py-1">
@@ -136,7 +147,7 @@ const Piano = () => {
               <div key={note + oct} className="relative">
                 <button
                   onClick={() => playNote(`${note}${oct}`)}
-                  className="w-16 h-48 bg-white rounded-md active:bg-gray-200"
+                  className="w-16 h-48 pt-32 text-gray-900 bg-white rounded-md active:bg-gray-200"
                 >
                   {note}
                   {oct}
@@ -144,7 +155,7 @@ const Piano = () => {
                 {blackNotes[idx] && (
                   <button
                     onClick={() => playNote(`${blackNotes[idx]}${oct}`)}
-                    className="drop-shadow-2xl w-10 h-32 bg-black rounded-md text-white text-xs absolute top-0 left-16 z-10 active:bg-gray-700"
+                    className="drop-shadow-2xl w-10 h-32 pt-16 bg-black rounded-md text-white text-xs absolute top-0 left-16 z-10 active:bg-gray-700"
                     style={{ transform: "translateX(-50%)" }}
                   >
                     {blackNotes[idx]}

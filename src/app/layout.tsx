@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "keyano | music",
-  description: "Piano build with a cool design",
+  description: "Piano built to record you creations",
 };
 
 export default function RootLayout({

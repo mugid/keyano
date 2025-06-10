@@ -7,19 +7,44 @@ const octaves = [3, 4, 5];
 
 const keyMap: Record<string, string> = {
   // White keys
-  a: "C4",
-  s: "D4",
-  d: "E4",
-  f: "F4",
-  g: "G4",
-  h: "A4",
-  j: "B4",
+  a: "C3",
+  s: "D3",
+  d: "E3",
+  f: "F3",
+  g: "G3",
+  h: "A3",
+  j: "B3",
+  k: "C4",
+  l: "D4",
+  ";": "E4",
+  "'": "F4",
+  z: "G4",
+  x: "A4",
+  c: "B4",
+  v: "C5",
+  b: "D5",
+  n: "E5",
+  m: "F5",
+  ",": "G5",
+  ".": "A5",
+  "/": "B5",
+
   // Black keys
-  w: "Cb4",
-  e: "Db4",
-  t: "Fb4",
-  y: "Gb4",
-  u: "Ab4",
+  2: "Cb3",
+  3: "Db3",
+  5: "Fb3",
+  6: "Gb3",
+  7: "Ab3",
+  9: "Cb4",
+  0: "Db4",
+  p: "Fb4",
+  "[": "Gb4",
+  "]": "Ab4",
+  w: "C5",
+  e: "D5",
+  t: "F5",
+  y: "G5",
+  u: "A5",
 };
 
 const usePlayNote = () => {
@@ -82,6 +107,7 @@ const usePlayNote = () => {
     octaves,
     whiteNotes,
     blackNotes,
+    keyMap
   };
 };
 
